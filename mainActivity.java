@@ -1,8 +1,10 @@
 package com.example.admin.testdb;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -66,6 +68,12 @@ public class MainActivity extends AppCompatActivity {
 //		deleteDatabase("test.db");
     }
 
+    public void Regist(View view)
+    {
+        Intent intent = new Intent(this,RegistActivity.class);
+        startActivity(intent);
+    }
+
     public void login(View view)
     {
         boolean isRightUser = false;
@@ -112,7 +120,29 @@ public class MainActivity extends AppCompatActivity {
             {
                 nNoName++;
                 if (nNoName==1 && isExistUser==false)
-                    Toast.makeText(this, "没有此账户", Toast.LENGTH_SHORT).show();
+                {
+                    //Toast.makeText(this, "没有此账户", Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("没有此账户,确认创建？");
+
+                    builder.setTitle("提示");
+
+                    builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        Intent intent = new Intent(MainActivity.this,RegistActivity.class);
+                        startActivity(intent);
+                        }
+                    });
+
+                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builder.create().show();
+                }
             }
         }
 
@@ -122,12 +152,12 @@ public class MainActivity extends AppCompatActivity {
         alertDialogBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
-                Toast.makeText(MainActivity.this,"你选择确定",Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "你选择确定", Toast.LENGTH_LONG).show();
             }
         });
 
-        alertDialogBuilder.setNegativeButton("退出",new DialogInterface.OnClickListener() {
-            @Override
+            alertDialogBuilder.setNegativeButton("退出", new DialogInterface.OnClickListener() {
+                @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish();
             }

@@ -30,20 +30,54 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //打开或创建test.db数据库
         SQLiteDatabase db = openOrCreateDatabase("info.db", Context.MODE_PRIVATE, null);
-        Cursor c = db.rawQuery("SELECT * FROM person", null);
-        if (c==null)
-        {
-            //db.execSQL("DROP TABLE IF EXISTS person");
+
+        //Cursor c = db.rawQuery("SELECT * FROM person", null);
+//        if (c==null)
+//        {
+
+            if (tabbleIsExist("person") == false)
+            {
+                db.execSQL("DROP TABLE IF EXISTS person");
+                db.execSQL("CREATE TABLE person (_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR UNIQUE, password VARCHAR, safecode VARCHAR)");
+                Person person = new Person();
+                person.name = "Admin";
+                person.password="password";
+                person.safecode="123456";
+                //插入数据
+                db.execSQL("INSERT INTO person VALUES (NULL, ?, ?, ?)", new Object[]{person.name, person.password, person.safecode});
+                db.close();
+            }
             //创建person表
-            db.execSQL("CREATE TABLE person (_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR UNIQUE, password VARCHAR, safecode VARCHAR)");
-            Person person = new Person();
-            person.name = "Admin";
-            person.password="password";
-            person.safecode="123456";
-            //插入数据
-            db.execSQL("INSERT INTO person VALUES (NULL, ?, ?, ?)", new Object[]{person.name, person.password, person.safecode});
-            db.close();
+//        }
+    }
+
+    /**
+     * 判断某张表是否存在
+     * @param tabName 表名
+     * @return
+     */
+    public boolean tabbleIsExist(String tableName){
+        boolean result = false;
+        if(tableName == null){
+            return false;
         }
+        SQLiteDatabase db = openOrCreateDatabase("info.db", Context.MODE_PRIVATE, null);
+        Cursor cursor = null;
+        try {
+            //db = this.getReadableDatabase();
+            String sql = "select count(*) as c from Sqlite_master  where type ='table' and name ='"+tableName.trim()+"' ";
+            cursor = db.rawQuery(sql, null);
+            if(cursor.moveToNext()){
+                int count = cursor.getInt(0);
+                if(count>0){
+                    result = true;
+                }
+            }
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return result;
     }
 
     public void Regist(View view)

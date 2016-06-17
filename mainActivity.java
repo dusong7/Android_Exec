@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.content.DialogInterface;
@@ -19,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText editTextUserName;
     EditText editTextUserPasswd;
+    boolean isCurPasswdForget = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase db = openOrCreateDatabase("test.db", Context.MODE_PRIVATE, null);
         db.execSQL("DROP TABLE IF EXISTS person");
         //创建person表
-        db.execSQL("CREATE TABLE person (_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, age SMALLINT)");
+        db.execSQL("CREATE TABLE person (_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR UNIQUE, age SMALLINT)");
         Person person = new Person();
         person.name = "john";
         person.age = 30;
@@ -74,8 +77,25 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void login(View view)
-    {
+
+    public void FoudPasswd(View v) {
+        if (isCurPasswdForget)
+        {
+            editTextUserName = (EditText) findViewById(R.id.editTextUserName);
+            String strUserName = editTextUserName.getText().toString();
+            Intent intent=new Intent();
+            intent.putExtra("extra",strUserName );
+            intent.setClass(MainActivity.this, FoudPasswdActivity.class);
+            startActivity(intent);
+        }
+        else
+        {
+            Intent intent = new Intent(this,FoudPasswdActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    public void login(View view) {
         boolean isRightUser = false;
         boolean isExistUser = false;
         int nNoName = 0;
@@ -86,18 +106,12 @@ public class MainActivity extends AppCompatActivity {
         String strUserName = editTextUserName.getText().toString();
         String strUserPassword = editTextUserPasswd.getText().toString();
 
-        if (strUserName.equals(""))
-        {
+        if (strUserName.equals("")) {
             Toast.makeText(this, "请输入登录账号", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            if (strUserPassword.equals(""))
-            {
+        } else {
+            if (strUserPassword.equals("")) {
                 Toast.makeText(this, "请输入登录密码", Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
+            } else {
                 Cursor c = db.rawQuery("SELECT * FROM person WHERE age >= ?", new String[]{"33"});
                 while (c.moveToNext()) {
                     int _id = c.getInt(c.getColumnIndex("_id"));
@@ -105,25 +119,20 @@ public class MainActivity extends AppCompatActivity {
                     int age = c.getInt(c.getColumnIndex("age"));
                     Log.i("db", "_id=>" + _id + ", name=>" + name + ", age=>" + age);
 
-                    if (name.equals(strUserName))
-                    {
+                    if (name.equals(strUserName)) {
                         isExistUser = true;
-                        String strAge = age+"";
-                        if (strUserPassword.equals(strAge))
-                        {
+                        String strAge = age + "";
+
+                        if (strUserPassword.equals(strAge)) {
                             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
                             isRightUser = true;
-                        }
-                        else
-                        {
+                        } else {
                             Toast.makeText(this, "密码错误", Toast.LENGTH_SHORT).show();
+                            isCurPasswdForget = true;
                         }
-                    }
-                    else
-                    {
+                    } else {
                         nNoName++;
-                        if (nNoName==1 && isExistUser==false)
-                        {
+                        if (nNoName == 1 && isExistUser == false) {
                             //Toast.makeText(this, "没有此账户", Toast.LENGTH_SHORT).show();
                             AlertDialog.Builder builder = new AlertDialog.Builder(this);
                             builder.setMessage("没有此账户,确认创建？");
@@ -133,7 +142,11 @@ public class MainActivity extends AppCompatActivity {
                             builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    Intent intent = new Intent(MainActivity.this,RegistActivity.class);
+                                    //Intent intent = new Intent(MainActivity.this, RegistActivity.class);
+                                    String strToRegist = editTextUserName.getText().toString();
+                                    Intent intent=new Intent();
+                                    intent.putExtra("extra",strToRegist );
+                                    intent.setClass(MainActivity.this, RegistActivity.class);
                                     startActivity(intent);
                                 }
                             });
@@ -167,8 +180,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 AlertDialog alertDialog = alertDialogBuilder.create();
-                if (isRightUser)
-                {
+                if (isRightUser) {
                     alertDialog.show();
                 }
             }

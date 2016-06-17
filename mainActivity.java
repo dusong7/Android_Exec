@@ -86,6 +86,93 @@ public class MainActivity extends AppCompatActivity {
         String strUserName = editTextUserName.getText().toString();
         String strUserPassword = editTextUserPasswd.getText().toString();
 
+        if (strUserName.equals(""))
+        {
+            Toast.makeText(this, "请输入登录账号", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            if (strUserPassword.equals(""))
+            {
+                Toast.makeText(this, "请输入登录密码", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Cursor c = db.rawQuery("SELECT * FROM person WHERE age >= ?", new String[]{"33"});
+                while (c.moveToNext()) {
+                    int _id = c.getInt(c.getColumnIndex("_id"));
+                    String name = c.getString(c.getColumnIndex("name"));
+                    int age = c.getInt(c.getColumnIndex("age"));
+                    Log.i("db", "_id=>" + _id + ", name=>" + name + ", age=>" + age);
+
+                    if (name.equals(strUserName))
+                    {
+                        isExistUser = true;
+                        String strAge = age+"";
+                        if (strUserPassword.equals(strAge))
+                        {
+                            Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+                            isRightUser = true;
+                        }
+                        else
+                        {
+                            Toast.makeText(this, "密码错误", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else
+                    {
+                        nNoName++;
+                        if (nNoName==1 && isExistUser==false)
+                        {
+                            //Toast.makeText(this, "没有此账户", Toast.LENGTH_SHORT).show();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                            builder.setMessage("没有此账户,确认创建？");
+
+                            builder.setTitle("提示");
+
+                            builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    Intent intent = new Intent(MainActivity.this,RegistActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+
+                            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                            builder.create().show();
+                        }
+                    }
+                }
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                alertDialogBuilder.setMessage("登录成功，是否继续");
+
+                alertDialogBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        Toast.makeText(MainActivity.this, "你选择确定", Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                alertDialogBuilder.setNegativeButton("退出", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                if (isRightUser)
+                {
+                    alertDialog.show();
+                }
+            }
+        }
 //        String sqlQuery = "SELECT * FROM person WHERE name=" + strUserName;
 //        Cursor c= db.rawQuery(sqlQuery,null);
 //        Cursor c = db.rawQuery(sqlQuery, null);
@@ -95,78 +182,5 @@ public class MainActivity extends AppCompatActivity {
 //            int age = c.getInt(c.getColumnIndex("age"));
 //
 //        }
-        Cursor c = db.rawQuery("SELECT * FROM person WHERE age >= ?", new String[]{"33"});
-        while (c.moveToNext()) {
-            int _id = c.getInt(c.getColumnIndex("_id"));
-            String name = c.getString(c.getColumnIndex("name"));
-            int age = c.getInt(c.getColumnIndex("age"));
-            Log.i("db", "_id=>" + _id + ", name=>" + name + ", age=>" + age);
-
-            if (name.equals(strUserName))
-            {
-                isExistUser = true;
-                String strAge = age+"";
-                if (strUserPassword.equals(strAge))
-                {
-                    Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-                    isRightUser = true;
-                }
-                else
-                {
-                    Toast.makeText(this, "密码错误", Toast.LENGTH_SHORT).show();
-                }
-            }
-            else
-            {
-                nNoName++;
-                if (nNoName==1 && isExistUser==false)
-                {
-                    //Toast.makeText(this, "没有此账户", Toast.LENGTH_SHORT).show();
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("没有此账户,确认创建？");
-
-                    builder.setTitle("提示");
-
-                    builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        Intent intent = new Intent(MainActivity.this,RegistActivity.class);
-                        startActivity(intent);
-                        }
-                    });
-
-                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-
-                    builder.create().show();
-                }
-            }
-        }
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage("登录成功，是否继续");
-
-        alertDialogBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface arg0, int arg1) {
-                Toast.makeText(MainActivity.this, "你选择确定", Toast.LENGTH_LONG).show();
-            }
-        });
-
-            alertDialogBuilder.setNegativeButton("退出", new DialogInterface.OnClickListener() {
-                @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        if (isRightUser)
-        {
-            alertDialog.show();
-        }
     }
 }

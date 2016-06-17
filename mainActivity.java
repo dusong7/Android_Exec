@@ -77,6 +77,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void EditUserNameClicked(View view)
+    {
+        isCurPasswdForget = false;
+    }
 
     public void FoudPasswd(View v) {
         if (isCurPasswdForget)

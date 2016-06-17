@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     public void login(View view)
     {
         boolean isRightUser = false;
+        boolean isExistUser = false;
         int nNoName = 0;
         SQLiteDatabase db = openOrCreateDatabase("test.db", Context.MODE_PRIVATE, null);
 
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (name.equals(strUserName))
             {
+                isExistUser = true;
                 String strAge = age+"";
                 if (strUserPassword.equals(strAge))
                 {
@@ -109,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             else
             {
                 nNoName++;
-                if (nNoName==1)
+                if (nNoName==1 && isExistUser==false)
                     Toast.makeText(this, "没有此账户", Toast.LENGTH_SHORT).show();
             }
         }

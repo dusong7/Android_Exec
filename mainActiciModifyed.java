@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
                     result = true;
                 }
             }
-
         } catch (Exception e) {
             // TODO: handle exception
         }
@@ -144,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     } else {
                         nNoName++;
-                        if (nNoName == 1 && isExistUser == false && isRightUser==false &&(nCursorStep==c.getCount())) {
+                        if (nNoName == c.getCount() && isExistUser == false  &&(nCursorStep==c.getCount())) {
                             //Toast.makeText(this, "没有此账户", Toast.LENGTH_SHORT).show();
                             AlertDialog.Builder builder = new AlertDialog.Builder(this);
                             builder.setMessage("没有此账户,确认创建？");

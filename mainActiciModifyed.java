@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,17 +29,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //打开或创建test.db数据库
-        SQLiteDatabase db = openOrCreateDatabase("test.db", Context.MODE_PRIVATE, null);
-        db.execSQL("DROP TABLE IF EXISTS person");
-        //创建person表
-        db.execSQL("CREATE TABLE person (_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR UNIQUE, password VARCHAR, safecode VARCHAR)");
-        Person person = new Person();
-        person.name = "Admin";
-        person.password="password";
-        person.safecode="123456";
-        //插入数据
-        db.execSQL("INSERT INTO person VALUES (NULL, ?, ?, ?)", new Object[]{person.name, person.password, person.safecode});
-        db.close();
+        SQLiteDatabase db = openOrCreateDatabase("info.db", Context.MODE_PRIVATE, null);
+        Cursor c = db.rawQuery("SELECT * FROM person", null);
+        if (c==null)
+        {
+            //db.execSQL("DROP TABLE IF EXISTS person");
+            //创建person表
+            db.execSQL("CREATE TABLE person (_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR UNIQUE, password VARCHAR, safecode VARCHAR)");
+            Person person = new Person();
+            person.name = "Admin";
+            person.password="password";
+            person.safecode="123456";
+            //插入数据
+            db.execSQL("INSERT INTO person VALUES (NULL, ?, ?, ?)", new Object[]{person.name, person.password, person.safecode});
+            db.close();
+        }
     }
 
     public void Regist(View view)
@@ -74,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         boolean isExistUser = false;
         int nNoName = 0;
         int nCursorStep = 0;
-        SQLiteDatabase db = openOrCreateDatabase("test.db", Context.MODE_PRIVATE, null);
+        SQLiteDatabase db = openOrCreateDatabase("info.db", Context.MODE_PRIVATE, null);
 
         editTextUserName = (EditText) findViewById(R.id.editTextUserName);
         editTextUserPasswd = (EditText) findViewById(R.id.editTextUserPasswd);

@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         boolean isRightUser = false;
         boolean isExistUser = false;
         int nNoName = 0;
+        int nCursorStep = 0;
         SQLiteDatabase db = openOrCreateDatabase("test.db", Context.MODE_PRIVATE, null);
 
         editTextUserName = (EditText) findViewById(R.id.editTextUserName);
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     int _id = c.getInt(c.getColumnIndex("_id"));
                     String name = c.getString(c.getColumnIndex("name"));
                     String password = c.getString(c.getColumnIndex("password"));
-
+                    nCursorStep ++;
                     if (name.equals(strUserName)) {
                         isExistUser = true;
 
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     } else {
                         nNoName++;
-                        if (nNoName == 1 && isExistUser == false) {
+                        if (nNoName == 1 && isExistUser == false && isRightUser==false &&(nCursorStep==c.getCount())) {
                             //Toast.makeText(this, "没有此账户", Toast.LENGTH_SHORT).show();
                             AlertDialog.Builder builder = new AlertDialog.Builder(this);
                             builder.setMessage("没有此账户,确认创建？");
@@ -128,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
                                     dialog.dismiss();
                                 }
                             });
-                            c.close();
                             builder.create().show();
                         }
                     }

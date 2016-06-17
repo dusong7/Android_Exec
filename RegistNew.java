@@ -57,6 +57,11 @@ public class RegistActivity extends AppCompatActivity {
                 nIsExistName++;
                 if (nIsExistName == c.getCount())
                 {
+                    if (strRegUserName.equals(""))
+                    {
+                        Toast.makeText(this, "用户名不能为空", Toast.LENGTH_SHORT).show();
+                    }
+
                     if (strRegUserPassword.equals(""))
                     {
                         Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
@@ -69,7 +74,7 @@ public class RegistActivity extends AppCompatActivity {
                     {
                         Toast.makeText(this, "安全码长度不符合规则", Toast.LENGTH_SHORT).show();
                     }
-                    if (!(strRegSafeCode.equals("")) &&!(strRegSafeCode.equals("")) &&(strRegSafeCode.length() == 6))
+                    if (!(strRegUserName.equals("")) && !(strRegUserPassword.equals("")) && !(strRegSafeCode.equals("")) &&(strRegSafeCode.length() == 6))
                     {
                         db.execSQL("INSERT INTO person VALUES (NULL, ?, ?, ?)", new Object[]{strRegUserName, strRegUserPassword, strRegSafeCode});
                         Toast.makeText(this, "注册完成", Toast.LENGTH_SHORT).show();

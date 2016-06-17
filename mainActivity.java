@@ -82,19 +82,19 @@ public class MainActivity extends AppCompatActivity {
         isCurPasswdForget = false;
     }
 
-    public void FoudPasswd(View v) {
+    public void FindPasswd(View v) {
         if (isCurPasswdForget)
         {
             editTextUserName = (EditText) findViewById(R.id.editTextUserName);
             String strUserName = editTextUserName.getText().toString();
             Intent intent=new Intent();
             intent.putExtra("extra",strUserName );
-            intent.setClass(MainActivity.this, FoudPasswdActivity.class);
+            intent.setClass(MainActivity.this, FindPasswdActivity.class);
             startActivity(intent);
         }
         else
         {
-            Intent intent = new Intent(this,FoudPasswdActivity.class);
+            Intent intent = new Intent(this,FindPasswdActivity.class);
             startActivity(intent);
         }
     }

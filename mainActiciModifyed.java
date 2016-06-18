@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
     public void login(View view) {
         boolean isRightUser = false;
         boolean isExistUser = false;
+        boolean isAdmin = false;
         int nNoName = 0;
         int nCursorStep = 0;
         SQLiteDatabase db = openOrCreateDatabase("info.db", Context.MODE_PRIVATE, null);
@@ -136,6 +137,12 @@ public class MainActivity extends AppCompatActivity {
 
                         if (strUserPassword.equals(password)) {
                             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+                            if (strUserName.equals("Admin"))
+                            {
+                                isAdmin=true;
+                                Intent intentAdmin = new Intent(MainActivity.this, AccountManageActivity.class);
+                                startActivity(intentAdmin);
+                            }
                             isRightUser = true;
                         } else {
                             Toast.makeText(this, "密码错误", Toast.LENGTH_SHORT).show();
@@ -190,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 AlertDialog alertDialog = alertDialogBuilder.create();
-                if (isRightUser) {
+                if (isRightUser && !isAdmin) {
                     alertDialog.show();
                 }
             }

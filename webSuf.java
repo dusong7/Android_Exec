@@ -36,9 +36,19 @@ public class MainActivity extends AppCompatActivity {
        // mainWebView.loadDataWithBaseURL("http://www.baidu.com", html, "text/html", "utf-8", null);
         mainWebView.loadUrl("http://www.baidu.com");
         //mainWebView.loadUrl("http://www.baidu.com");
+        //访问assets文件夹
+        //mainWebView.loadUrl("file:///android_asset/image.html");
     }
 }
 //
 //注意在manifest中申请上网的功能，申请后就可以了。
 //   <uses-permission android:name="android.permission.INTERNET"/>
 //  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+//在Android Studio中添加assets目录，目录的位置在
+//[java] view plain copy 在CODE上查看代码片派生到我的代码片
+//XXX\src\main\assets  
+//XXX代表你的项目的路径，assets放在src\main目录下。
+
+//这个位置可以通过XXX.iml  XXX代表自己的项目名，其中有设置assets的目录，设置如下
+//[java] view plain copy 在CODE上查看代码片派生到我的代码片
+//<option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />  

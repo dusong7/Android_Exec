@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+         getSupportActionBar().hide(); //全屏浏览
         setContentView(R.layout.activity_main);
         WebView mainWebView = new WebView(this);
         mainWebView = (WebView) findViewById(R.id.webView);

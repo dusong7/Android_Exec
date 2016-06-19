@@ -24,3 +24,56 @@ public class MainActivity extends AppCompatActivity {
         mySound.start();
     }
 }
+
+///////////////////NEW
+package com.example.admin.testaudio;
+
+import android.media.MediaPlayer;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+public class MainActivity extends AppCompatActivity {
+
+    MediaPlayer mySound;
+    boolean isReleased = false;
+    boolean isPaused = false;
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        mySound.release();
+//        isReleased= true;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mySound = MediaPlayer.create(this,R.raw.demo);
+        getSupportActionBar().hide();
+    }
+
+    public void playMusic(View view) {
+
+           Button btn = (Button)this.findViewById(R.id.button);
+
+
+        String strCurBtn = btn.getText().toString();
+        switch (strCurBtn)
+        {
+            case "Pause":
+                btn.setText("Play");
+                mySound.pause();
+                break;
+            case "Play":
+                btn.setText("Pause");
+                mySound.start();
+                break;
+            default:
+                break;
+        }
+
+    }
+
+}

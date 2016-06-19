@@ -17,3 +17,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
     }
 }
+//import android.support.v7.app.AppCompatActivity;
+//所以我们要使用
+
+//super.onCreate(savedInstanceState);
+//setContentView(R.layout.activity_main);
+//getSupportActionBar().hide();

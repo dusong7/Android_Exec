@@ -65,8 +65,8 @@ public class surView extends SurfaceView  implements Callback{
     public boolean onTouchEvent(MotionEvent event) {
 
         Toast.makeText(getContext(), "默认Toast样式", Toast.LENGTH_SHORT).show();
-        nCirclePosX += 10;
-        nCirclePosY += 10;
+        //nCirclePosX += 10;
+        nCirclePosY -= 100;
         return super.onTouchEvent(event);
     }
 
@@ -108,7 +108,8 @@ public class surView extends SurfaceView  implements Callback{
                         c = surfaceHolder.lockCanvas(null);
                         doDraw(c);
                         //通过它来控制帧数执行一次绘制后休息50ms
-                        Thread.sleep(5);
+                        Thread.sleep(50);
+                        nCirclePosY += 10;
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -126,7 +127,7 @@ public class surView extends SurfaceView  implements Callback{
             c.drawColor(Color.WHITE);
 
             c.translate(nCirclePosX, nCirclePosY);
-            c.drawCircle(0,0, radius++, paint);
+            c.drawCircle(0,0, 20, paint);
 
             Paint paintT = new Paint();
             paintT.setColor(Color.BLACK);

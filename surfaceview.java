@@ -23,6 +23,8 @@ public class surView extends SurfaceView  implements Callback{
     LoopThread thread;
     int nCirclePosX;
     int nCirclePosY;
+    Canvas c = null;
+
     public surView(Context context, AttributeSet attrs) {
         super(context);
 
@@ -91,14 +93,13 @@ public class surView extends SurfaceView  implements Callback{
 
             paint = new Paint();
             paint.setColor(Color.RED);
-            paint.setStrokeWidth(20);
+            paint.setStrokeWidth(10);
             paint.setStyle(Paint.Style.STROKE);
         }
 
         @Override
         public void run() {
-
-            Canvas c = null;
+            //Canvas c = null;
 
             while(isRunning){
 
@@ -107,6 +108,7 @@ public class surView extends SurfaceView  implements Callback{
 
                         c = surfaceHolder.lockCanvas(null);
                         doDraw(c);
+
                         //通过它来控制帧数执行一次绘制后休息50ms
                         Thread.sleep(50);
                         nCirclePosY += 10;
@@ -126,18 +128,38 @@ public class surView extends SurfaceView  implements Callback{
             //这个很重要，清屏操作，清楚掉上次绘制的残留图像
             c.drawColor(Color.WHITE);
 
-            c.translate(nCirclePosX, nCirclePosY);
-            c.drawCircle(0,0, 20, paint);
+            DrawScore(c);
 
             Paint paintT = new Paint();
             paintT.setColor(Color.BLACK);
-            paintT.setTextSize(100);
+            paintT.setTextSize(50);
+            String strPosY = "";
+            strPosY = nCirclePosY + "";
+            c.drawText(strPosY,100,200,paintT);
 
-            c.drawText("T",100,200,paintT);
+            c.drawCircle(nCirclePosX,nCirclePosY,100, paint);
+
             if(radius > 100){
                 radius = 10f;
             }
 
+//            if(nCirclePosY > 800){
+//                nCirclePosY = 20;
+//            }
+        }
+
+        public void DrawScore(Canvas c)
+        {
+            c.drawColor(Color.WHITE);
+
+            c.translate(300, 100);
+
+            Paint paintT = new Paint();
+            paintT.setColor(Color.BLACK);
+            paintT.setTextSize(50);
+            String strPosY = "";
+            strPosY = nCirclePosY + "";
+            c.drawText(strPosY,100,200,paintT);
         }
 
     }

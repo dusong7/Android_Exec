@@ -5,6 +5,14 @@ package com.example.admin.surface_;
  */
 
 
+//    surView view_;
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//        view_ = (surView) findViewById(R.id.surView_);
+//    }
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;

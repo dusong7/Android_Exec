@@ -1,4 +1,6 @@
 # Android_Exec Just, Help Panpan Zheng do homework, but I have never learn it sincerely.
+个人练习代码——
+
 
 This have New Issue, write a simple game
 
